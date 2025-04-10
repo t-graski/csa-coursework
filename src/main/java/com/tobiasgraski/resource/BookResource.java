@@ -1,13 +1,11 @@
 package com.tobiasgraski.resource;
 
 import com.tobiasgraski.dao.BookDAO;
-import com.tobiasgraski.dto.BookDTO;
 import com.tobiasgraski.model.Book;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 
 @Path("/books")
 @Produces(MediaType.APPLICATION_JSON)
@@ -18,7 +16,7 @@ public class BookResource {
 
     @POST
     @Path("/")
-    public Response createBook(BookDTO book) {
+    public Response createBook(Book book) {
         var created = bookDAO.create(book);
         return Response.created(URI.create("/books/" + created.getId())).entity(created).build();
     }
@@ -39,7 +37,7 @@ public class BookResource {
 
     @PUT
     @Path("/{id}")
-    public Response updateBook(@PathParam("id") int id, BookDTO bookDTO) {
+    public Response updateBook(@PathParam("id") int id, Book bookDTO) {
         var updatedBook = bookDAO.update(id, bookDTO);
         return Response.ok(updatedBook).build();
     }

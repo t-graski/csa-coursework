@@ -1,16 +1,14 @@
 package com.tobiasgraski.dao;
 
-import com.tobiasgraski.dto.AuthorDTO;
 import com.tobiasgraski.exceptions.AuthorNotFoundException;
 import com.tobiasgraski.model.Author;
 import com.tobiasgraski.model.Book;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class AuthorDAO {
-    private static BookDAO bookDAO = new BookDAO();
+    private static final BookDAO bookDAO = new BookDAO();
     private static final List<Author> authors = new ArrayList<>();
     private static int currentId = 1;
 
@@ -27,17 +25,17 @@ public class AuthorDAO {
         return bookDAO.findAll().stream().filter(b -> b.getAuthor().getId() == id).toList();
     }
 
-    public Author create(AuthorDTO authorDTO) {
-        var author = new Author(getNextId(), authorDTO.firstName(), authorDTO.lastName(), authorDTO.biography());
+    public Author create(Author authorDTO) {
+        var author = new Author(getNextId(), authorDTO.getFirstName(), authorDTO.getLastName(), authorDTO.getBiography());
         authors.add(author);
         return author;
     }
 
-    public Author update(int id, AuthorDTO authorDTO) {
+    public Author update(int id, Author authorDTO) {
         var author = findById(id);
-        author.setFirstName(authorDTO.firstName());
-        author.setLastName(authorDTO.lastName());
-        author.setBiography(authorDTO.biography());
+        author.setFirstName(authorDTO.getFirstName());
+        author.setLastName(authorDTO.getLastName());
+        author.setBiography(authorDTO.getBiography());
         return author;
     }
 

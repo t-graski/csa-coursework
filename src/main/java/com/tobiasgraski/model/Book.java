@@ -1,13 +1,13 @@
 package com.tobiasgraski.model;
 
 import com.tobiasgraski.exceptions.InvalidInputException;
-import com.tobiasgraski.exceptions.InvalidInputExceptionMapper;
 
 import java.time.Year;
 
 public class Book {
     private int id;
     private String title;
+    private int authorId;
     private Author author;
     private String ISBN;
     private int publicationYear;
@@ -79,6 +79,14 @@ public class Book {
     public void setPrice(double price) {
         if (price <= 0) throw new InvalidInputException("Price cannot be 0 or negative");
         this.price = price;
+    }
+
+    public int getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(int authorId) {
+        this.authorId = authorId;
     }
 
     public int getStock() {

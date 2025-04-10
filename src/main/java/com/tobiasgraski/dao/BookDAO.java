@@ -1,17 +1,14 @@
 package com.tobiasgraski.dao;
 
-import com.tobiasgraski.dto.BookDTO;
 import com.tobiasgraski.exceptions.BookNotFoundException;
-import com.tobiasgraski.model.Author;
 import com.tobiasgraski.model.Book;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class BookDAO {
 
-    private static AuthorDAO authorDAO = new AuthorDAO();
+    private static final AuthorDAO authorDAO = new AuthorDAO();
     private static final List<Book> books = new ArrayList<>();
     private static int currentId = 1;
 
@@ -23,21 +20,21 @@ public class BookDAO {
         return books.stream().filter(b -> b.getId() == id).findFirst().orElseThrow(() -> new BookNotFoundException("No book with Id " + id));
     }
 
-    public Book create(BookDTO bookDTO) {
-        var author = authorDAO.findById(bookDTO.authorId());
-        var book = new Book(getNextId(), bookDTO.title(), author, bookDTO.isbn(), bookDTO.publicationYear(), bookDTO.price(), bookDTO.stock());
+    public Book create(Book bookDTO) {
+        var author = authorDAO.findById(bookDTO.getAuthorId());
+        var book = new Book(getNextId(), bookDTO.getTitle(), author, bookDTO.getISBN(), bookDTO.getPublicationYear(), bookDTO.getPrice(), bookDTO.getStock());
         books.add(book);
         return book;
     }
 
-    public Book update(int id, BookDTO bookDTO) {
+    public Book update(int id, Book bookDTO) {
         var book = findById(id);
-        book.setTitle(bookDTO.title());
-        book.setAuthor(authorDAO.findById(bookDTO.authorId()));
-        book.setISBN(bookDTO.isbn());
-        book.setPublicationYear(bookDTO.publicationYear());
-        book.setPrice(bookDTO.price());
-        book.setStock(bookDTO.stock());
+        book.setTitle(bookDTO.getTitle());
+        book.setAuthor(authorDAO.findById(bookDTO.getAuthorId()));
+        book.setISBN(bookDTO.getISBN());
+        book.setPublicationYear(bookDTO.getPublicationYear());
+        book.setPrice(bookDTO.getPrice());
+        book.setStock(bookDTO.getStock());
         return book;
     }
 

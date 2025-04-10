@@ -1,7 +1,7 @@
 package com.tobiasgraski.resource;
 
 import com.tobiasgraski.dao.AuthorDAO;
-import com.tobiasgraski.dto.AuthorDTO;
+import com.tobiasgraski.model.Author;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -17,7 +17,7 @@ public class AuthorResource {
 
     @POST
     @Path("/")
-    public Response createAuthor(AuthorDTO authorDTO) {
+    public Response createAuthor(Author authorDTO) {
         var created = authorDAO.create(authorDTO);
         return Response.created(URI.create("/authors/" + created.getId())).entity(created).build();
     }
@@ -45,7 +45,7 @@ public class AuthorResource {
 
     @PUT
     @Path("/{id}")
-    public Response updateAuthor(@PathParam("id") int id, AuthorDTO authorDTO) {
+    public Response updateAuthor(@PathParam("id") int id, Author authorDTO) {
         var updatedAuthor = authorDAO.update(id, authorDTO);
         return Response.ok(updatedAuthor).build();
     }
