@@ -6,6 +6,7 @@ import com.tobiasgraski.model.Book;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 
+import java.net.URI;
 import java.net.URISyntaxException;
 
 @Path("/books")
@@ -13,15 +14,13 @@ import java.net.URISyntaxException;
 @Consumes(MediaType.APPLICATION_JSON)
 public class BookResource {
 
-    private final BookDAO bookDAO = new BookDAO();
+    private static final BookDAO bookDAO = new BookDAO();
 
     @POST
     @Path("/")
-    public Response createBook(BookDTO book, @Context UriInfo uriInfo) {
+    public Response createBook(BookDTO book) {
         var created = bookDAO.create(book);
-        UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
-        uriBuilder.path(Integer.toString(created.getId()));
-        return Response.created(uriBuilder.build()).entity(created).build();
+        return Response.created(URI.create("/books/" + created.getId())).entity(created).build();
     }
 
     @GET
@@ -40,7 +39,15 @@ public class BookResource {
 
     @PUT
     @Path("/{id}")
-    public Response updateBook(@PathParam("id") int id) {
+    public Response updateBook(@PathParam("id") int id, BookDTO bookDTO) {
+        var updatedBook = bookDAO.update(id, bookDTO);
+        return Response.ok(updatedBook).build();
+    }
+
+    @DELETE
+    @Path("/{id}")
+    public Response deleteBook(@PathParam("id") int id) {
+        bookDAO.delete(id);
         return Response.ok().build();
     }
 }
