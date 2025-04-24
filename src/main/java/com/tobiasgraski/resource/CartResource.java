@@ -16,7 +16,8 @@ public class CartResource {
     @Path("/items")
     public Response addToCart(@PathParam("customerId") int customerId, Book book) {
         cartDAO.addToCart(customerId, book);
-        return Response.ok().build();
+        var cart = cartDAO.findByCustomerId(customerId);
+        return Response.ok().entity(cart).build();
     }
 
     @GET

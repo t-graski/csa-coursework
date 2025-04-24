@@ -1,5 +1,7 @@
 package com.tobiasgraski.model;
 
+import com.tobiasgraski.exceptions.InvalidInputException;
+
 public class Author {
     private int id;
     private String firstName;

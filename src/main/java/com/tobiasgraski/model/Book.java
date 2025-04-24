@@ -18,6 +18,15 @@ public class Book {
     }
 
     public Book(int id, String title, Author author, String ISBN, int publicationYear, double price, int stock) {
+        if (title.isEmpty()) throw new InvalidInputException("Title cannot be empty");
+        if (title.length() > 100)
+            throw new InvalidInputException("Title cannot be longer than 100 characters");
+        if (ISBN.isEmpty()) throw new InvalidInputException("ISBN cannot be empty");
+        if (publicationYear > Year.now().getValue())
+            throw new InvalidInputException("Publication year cannot be in the future");
+        if (price <= 0) throw new InvalidInputException("Price cannot be 0 or negative");
+        if (stock < 0) throw new InvalidInputException("Stock cannot be negative");
+
         setId(id);
         setTitle(title);
         setAuthor(author);
@@ -40,8 +49,7 @@ public class Book {
     }
 
     public void setTitle(String title) {
-        if (title.isEmpty()) throw new InvalidInputException("Title cannot be empty");
-        if (title.length() > 100) throw new InvalidInputException("Title cannot be longer than 100 characters");
+
         this.title = title;
     }
 
@@ -51,6 +59,7 @@ public class Book {
 
     public void setAuthor(Author author) {
         this.author = author;
+        this.authorId = author.getId();
     }
 
     public String getISBN() {
@@ -58,7 +67,6 @@ public class Book {
     }
 
     public void setISBN(String ISBN) {
-        if (ISBN.isEmpty()) throw new InvalidInputException("ISBN cannot be empty");
         this.ISBN = ISBN;
     }
 
@@ -67,8 +75,6 @@ public class Book {
     }
 
     public void setPublicationYear(int publicationYear) {
-        if (publicationYear > Year.now().getValue())
-            throw new InvalidInputException("Publication year cannot be in the future");
         this.publicationYear = publicationYear;
     }
 
@@ -77,7 +83,6 @@ public class Book {
     }
 
     public void setPrice(double price) {
-        if (price <= 0) throw new InvalidInputException("Price cannot be 0 or negative");
         this.price = price;
     }
 
@@ -94,7 +99,6 @@ public class Book {
     }
 
     public void setStock(int stock) {
-        if (stock < 0) throw new InvalidInputException("Stock cannot be negative");
         this.stock = stock;
     }
 }

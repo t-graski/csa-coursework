@@ -1,6 +1,7 @@
 package com.tobiasgraski.dao;
 
 import com.tobiasgraski.exceptions.AuthorNotFoundException;
+import com.tobiasgraski.exceptions.InvalidInputException;
 import com.tobiasgraski.model.Author;
 import com.tobiasgraski.model.Book;
 

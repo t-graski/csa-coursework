@@ -1,6 +1,7 @@
 package com.tobiasgraski.dao;
 
 import com.tobiasgraski.exceptions.CartNotFoundException;
+import com.tobiasgraski.exceptions.OutOfStockException;
 import com.tobiasgraski.model.Book;
 import com.tobiasgraski.model.Cart;
 import com.tobiasgraski.model.Customer;
@@ -12,11 +13,11 @@ public class CartDAO {
 
     private static final List<Cart> carts = new ArrayList<>();
     private static final BookDAO bookDAO = new BookDAO();
+    private static final AuthorDAO authorDAO = new AuthorDAO();
     private static final CustomerDAO customerDAO = new CustomerDAO();
 
     private static int currentId = 1;
 
-    // find cart of customer
     public Cart findByCustomerId(int customerId) {
         return carts.stream().filter(c -> c.getCustomer().getId() == customerId).findFirst().orElseThrow(() -> new CartNotFoundException("No cart found for customer with Id " + customerId));
     }
@@ -30,14 +31,20 @@ public class CartDAO {
 
         var existingBook = bookDAO.findById(book.getId());
 
+        if (existingBook.getStock() <= 0) {
+            throw new OutOfStockException("No book with Id " + book.getId() + " in stock");
+        }
+
         cart.getBooks().add(existingBook);
     }
 
     public void updateBookInCart(int customerId, Book book) {
         var cart = findByCustomerId(customerId);
         var existingBook = cart.getBooks().stream().filter(b -> b.getId() == book.getId()).findFirst().orElseThrow(() -> new CartNotFoundException("No book found in cart with Id " + book.getId()));
+        var existingAuthor = authorDAO.findById(book.getAuthorId());
+
         existingBook.setTitle(book.getTitle());
-        existingBook.setAuthor(book.getAuthor());
+        existingBook.setAuthor(existingAuthor);
         existingBook.setPrice(book.getPrice());
     }
 
