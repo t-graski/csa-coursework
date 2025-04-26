@@ -39,7 +39,8 @@ public class BookDAO {
     }
 
     public void delete(int id) {
-        books.removeIf(b -> b.getId() == id);
+        var success = books.removeIf(b -> b.getId() == id);
+        if (!success) throw new BookNotFoundException("No book with Id " + id);
     }
 
     private int getNextId() {

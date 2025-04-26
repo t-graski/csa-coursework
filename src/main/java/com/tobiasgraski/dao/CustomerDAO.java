@@ -1,5 +1,6 @@
 package com.tobiasgraski.dao;
 
+import com.tobiasgraski.exceptions.AuthorNotFoundException;
 import com.tobiasgraski.exceptions.CustomerNotFoundException;
 import com.tobiasgraski.model.Customer;
 
@@ -35,7 +36,8 @@ public class CustomerDAO {
     }
 
     public void delete(int id) {
-        customers.removeIf(c -> c.getId() == id);
+        var success = customers.removeIf(c -> c.getId() == id);
+        if (!success) throw new AuthorNotFoundException("No author with Id " + id);
     }
 
     private int getNextId() {

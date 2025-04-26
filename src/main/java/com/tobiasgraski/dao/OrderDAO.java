@@ -2,7 +2,6 @@ package com.tobiasgraski.dao;
 
 import com.tobiasgraski.exceptions.CartNotFoundException;
 import com.tobiasgraski.model.Order;
-import jakarta.ws.rs.NotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +24,9 @@ public class OrderDAO {
 
     public Order create(int customerId) {
         var order = new Order();
-        order.setCart(cartDAO.findByCustomerId(customerId));
+        var cart = cartDAO.findByCustomerId(customerId);
+        cart.getBooks().forEach(b -> b.setStock(b.getStock() - 1));
+        order.setCart(cart);
         order.getCart().setId(getNextId());
         orders.add(order);
         return order;

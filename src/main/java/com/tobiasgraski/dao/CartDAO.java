@@ -1,5 +1,6 @@
 package com.tobiasgraski.dao;
 
+import com.tobiasgraski.exceptions.BookNotFoundException;
 import com.tobiasgraski.exceptions.CartNotFoundException;
 import com.tobiasgraski.exceptions.OutOfStockException;
 import com.tobiasgraski.model.Book;
@@ -50,7 +51,9 @@ public class CartDAO {
 
     public void removeFromCart(int customerId, int bookId) {
         var cart = findByCustomerId(customerId);
-        cart.getBooks().removeIf(b -> b.getId() == bookId);
+        var success = cart.getBooks().removeIf(b -> b.getId() == bookId);
+        if (!success)
+            throw new BookNotFoundException("No book found with in cart with Id " + bookId);
     }
 
     public int getNextId() {

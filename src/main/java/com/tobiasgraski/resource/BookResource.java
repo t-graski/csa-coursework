@@ -45,7 +45,7 @@ public class BookResource {
     @DELETE
     @Path("/{id}")
     public Response deleteBook(@PathParam("id") int id) {
-        bookDAO.delete(id);
+         bookDAO.delete(id);
         return Response.ok().build();
     }
 }

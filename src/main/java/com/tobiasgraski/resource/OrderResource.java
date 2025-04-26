@@ -1,12 +1,10 @@
 package com.tobiasgraski.resource;
 
 import com.tobiasgraski.dao.OrderDAO;
-import com.tobiasgraski.model.Order;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-import java.awt.*;
 import java.net.URI;
 
 @Path("/customers/{customerId}/orders")

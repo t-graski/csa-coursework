@@ -41,7 +41,8 @@ public class AuthorDAO {
     }
 
     public void delete(int id) {
-        authors.removeIf(a -> a.getId() == id);
+        var success = authors.removeIf(a -> a.getId() == id);
+        if (!success) throw new AuthorNotFoundException("No author with Id " + id);
     }
 
     private int getNextId() {
